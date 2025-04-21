@@ -97,3 +97,103 @@ Run the `iam-roles.sh` script to create IAM roles for the EKS cluster and worker
 ```bash
 cd cluster-setup
 bash iam-roles.sh
+This script creates roles with the necessary policies for your EKS environment.
+
+3. VPC and Subnet Setup
+Run the vpc-setup.sh script to create the VPC and subnets for your cluster.
+
+bash
+Copy
+Edit
+bash vpc-setup.sh
+RBAC Configuration
+1. Define Roles
+dev-role.yaml: Defines access for developers in the dev namespace.
+
+prod-role.yaml: Defines access for the production team in the prod namespace.
+
+You can edit these files as per your team’s access needs.
+
+2. Create RoleBindings
+The role-bindings.yaml file binds the roles to users, granting access.
+
+Apply the RBAC configurations:
+
+bash
+Copy
+Edit
+kubectl apply -f rbac/dev-role.yaml
+kubectl apply -f rbac/prod-role.yaml
+kubectl apply -f rbac/role-bindings.yaml
+Namespace Setup
+We define two namespaces: dev and prod.
+
+Apply the namespace configurations:
+
+bash
+Copy
+Edit
+kubectl apply -f namespaces/dev-namespace.yaml
+kubectl apply -f namespaces/prod-namespace.yaml
+App Deployment
+1. Install NGINX using Helm
+Use the helm-install-nginx.sh script to install NGINX in your Kubernetes cluster.
+
+bash
+Copy
+Edit
+bash apps/helm-install-nginx.sh
+2. Custom Helm Values
+You can modify the nginx-values.yaml file to customize the Helm chart configuration before deploying.
+
+Security Policies
+1. Pod Security Policy (PSP)
+The psp.yaml file defines security policies for your pods to ensure compliance.
+
+Apply the security policies:
+
+bash
+Copy
+Edit
+kubectl apply -f security/psp.yaml
+2. OPA Gatekeeper
+The opa-gatekeeper-constraints.yaml file sets up OPA Gatekeeper for policy enforcement.
+
+Apply the constraints:
+
+bash
+Copy
+Edit
+kubectl apply -f security/opa-gatekeeper-constraints.yaml
+Useful Commands
+Here are some useful kubectl and eksctl commands:
+
+Check cluster status:
+
+bash
+Copy
+Edit
+kubectl get nodes
+Check namespaces:
+
+bash
+Copy
+Edit
+kubectl get namespaces
+List all pods in the dev namespace:
+
+bash
+Copy
+Edit
+kubectl get pods -n dev
+View logs of a pod:
+
+bash
+Copy
+Edit
+kubectl logs <pod-name> -n <namespace>
+Contributing
+We welcome contributions! Please fork the repository, create a feature branch, and submit a pull request.
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
